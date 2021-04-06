@@ -1,0 +1,63 @@
+<div class="container min-vh-100">
+
+  <div class="row min-vh-100">
+    <div class="offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4 m-auto">
+      
+      <div class="card shadow rounded-lg">
+        <div class="card-body">
+          <div class="text-center">
+            <h3 class="font-weight-bold">
+              Start Chatting..
+            </h3>
+            <small>Let's have healthy conversations..</small>
+          </div>
+          <hr>
+
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-mobile"></i>
+              </div>
+            </div>
+            <input type="number"
+              [(ngModel)]="mobileNumber"
+              placeholder="Mobile Number"
+              class="form-control"
+              [class.is-invalid]="formError.mobileNumber"
+              [disabled]="joiningStatus !== 'notJoinied'">
+            <div class="invalid-feedback" *ngIf="formError.mobileNumber">
+              {{ formError.mobileNumber }}
+            </div>
+          </div>
+
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-user"></i>
+              </div>
+            </div>
+            <input type="text"
+              [(ngModel)]="name"
+              placeholder="Your name.."
+              class="form-control"
+              [class.is-invalid]="formError.name"
+              [disabled]="joiningStatus !== 'notJoinied'">
+            <div class="invalid-feedback" *ngIf="formError.name">
+              {{ formError.name }}
+            </div>
+          </div>
+          
+          <div class="text-center mt-3">
+            <button type="button" (click)="join()" class="btn btn-primary"
+              [disabled]="joiningStatus !== 'notJoinied'">
+              {{ joiningStatus === 'joining' ? 'Joining..' : 'Join'}}
+            </button>
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+</div>

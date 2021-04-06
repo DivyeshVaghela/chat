@@ -1,0 +1,29 @@
+.user-list {
+  li {
+    cursor: pointer;
+    ::selection { background: transparent; }
+    ::-moz-selection { background: transparent; }
+
+    &:hover {
+      background-color: var(--white)!important;
+    }
+  }
+}
+
+.message-container {
+  display: inline-block;
+  align-self: flex-start;
+  background-color: var(--light)!important;
+  margin: 5px;
+  max-width: 80%;
+  border-radius: .5em;
+  font-size: .8em;
+
+  &.align-end {
+    align-self: flex-end;
+  }
+
+  &.primary {
+    background-color: #e2edf9!important;
+  }
+}

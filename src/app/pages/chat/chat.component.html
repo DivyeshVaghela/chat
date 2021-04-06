@@ -1,0 +1,162 @@
+<div class="container-fluid vh-100 pl-0 pr-0">
+
+  <div class="row no-gutters vh-100">
+
+    <!-- Active Users -->
+    <div class="col-md-4 col-lg-3 d-none d-md-inline-block">
+      <div class="h-100 bg-light">
+        <div class="d-flex flex-column vh-100">
+          <div class="bg-primary text-white pl-3 pr-3 pt-3 pb-3 app-header">
+            <div>
+              <div class="d-flex align-items-center">
+                <ng-container *ngIf="activeUser else noActiveUser">
+                  <h3 class="mb-0"><i class="fa fa-comments mr-2"></i></h3>
+                  <h3 class="text-nowrap text-truncate flex-grow-1 mb-0" [title]="activeUser.name">{{ activeUser.name }}</h3>
+                  <button type="button" class="btn btn-sm btn-link text-white ml-2" (click)="logout()">
+                    <i class="fa fa-sign-out"></i>
+                  </button>
+                </ng-container>
+                <ng-template #noActiveUser>
+                  <i class="fa fa-comments"></i>
+                  Chat
+                </ng-template>
+              </div>
+              <h3 class="text-nowrap text-truncate">
+              </h3>
+              <p>
+                <small>Let's have healthy conversations..</small>
+              </p>
+            </div>
+          </div>
+  
+          <ul class="list-group user-list flex-grow-1 overflow-y-auto">
+
+            <ng-container *ngIf="!isLoadingUsers else usersLoader">
+              <ng-container *ngIf="users.length else noUsers">
+                <li *ngFor="let user of users" class="list-group-item bg-light pt-1 pb-1 pl-2 pb-2" (click)="selectUser(user)">
+                  <div class="d-flex align-items-center mt-2">
+                    <app-avatar class="mr-2"></app-avatar>
+                    <div class="w-75 text">
+                      <div class="text-nowrap text-truncate">
+                        {{ user.name }}
+                      </div>
+                      <div class="text-muted">
+                        <small title="A new message..">A new message..</small>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ng-container>
+            </ng-container>
+          
+            <ng-template #noUsers>
+              <li class="list-group-item bg-light pt-1 pb-1 pl-2 pb-2">
+                <p>
+                  Congratulations, you are the first one to join this
+                  <br>
+                  <small>Tell your friends also join..</small>
+                </p>
+              </li>
+            </ng-template>
+  
+            <ng-template #usersLoader>
+              <li class="list-group-item bg-light pt-1 pb-1 pl-2 pb-2">
+                Loading..
+              </li>
+            </ng-template>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- END--Active Users -->
+
+    <!-- Messages area -->
+    <div class="col-12 col-md-8 col-lg-9 h-100">
+      <div class="h-100">
+        <div class="d-flex flex-column h-100">
+
+          <ng-container *ngIf="selectedUser else selectUserTmplt">
+            <div class="head-toolbar">
+              <ul class="list-group">
+                <li class="list-group-item bg-light">
+                  <div class="d-flex align-items-center">
+                    <app-avatar class="mr-2"></app-avatar>
+                    <div class="flex-grow-1">
+                      {{ selectedUser.name }}
+                    </div>
+                    <div>
+                      <div class="btn-group" dropdown>
+                        <button type="button" dropdownToggle class="btn btn-link" aria-controls="dropdown-usermenu">
+                          <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <ul id="dropdown-usermenu" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+                            role="menu" aria-labelledby="button-usermenu">
+                          <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+                          <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+                          <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+                          <li class="divider dropdown-divider"></li>
+                          <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="message-list flex-grow-1 overflow-hideen">
+              <div class="h-100 d-flex flex-column-reverse  overflow-y-auto  pl-2 pr-2 pb-2">
+                <ng-container *ngIf="messages && messages[selectedUser.mobileNumber] && messages[selectedUser.mobileNumber].length else startMessaging">
+                  <div class="message-container p-2 shadow" *ngFor="let message of messages[selectedUser.mobileNumber];" 
+                    [ngClass]="{ 'primary align-end': message.from == activeUser.mobileNumber }">
+                    {{ message.message }}
+    
+                    <br>
+                    <div class="text-right text-muted">
+                      <small>{{ message.date | date: 'medium' }}</small>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-template #startMessaging>
+                  <div class="card bg-primary text-white">
+                    <div class="card-body text-right">
+                      This is the starting of your conversations with
+                      <h3>{{ selectedUser.name }}</h3>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="input-area">
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">
+                  <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                      <input type="text" class="form-control" [(ngModel)]="message" placeholder="Write something awesome.." (keyup.enter)="sendMessage()">
+                    </div>
+                    <button type="button" class="btn btn-link" (click)="sendMessage()">
+                      <i class="fa fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+
+
+          <ng-template #selectUserTmplt>
+            <div class="align-self-center m-auto">
+              Select chat from the pane..
+            </div>
+          </ng-template>
+
+        </div>
+        
+      </div>
+    </div>
+    <!-- END--Messages area -->
+
+  </div>
+
+</div>
